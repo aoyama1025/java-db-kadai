@@ -18,8 +18,7 @@ public class Employees_Chapter04 {
 					"root",
 					"Sugiyuma3!");
 
-			System.out.println("データベース接続成功");
-			System.out.println(con);
+			System.out.println("データベース接続成功" + con);
 
 			//SQLクエリを準備
 			statement = con.createStatement();
@@ -27,7 +26,7 @@ public class Employees_Chapter04 {
 					 CREATE TABLE employees (
 					          id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
 					          name VARCHAR(60) NOT NULL,
-					          email VARCHAR(255),
+					          email VARCHAR(255) NOT NULL,
 					          age INT(11),
 					          address VARCHAR(255)
 					        );
