@@ -3,15 +3,15 @@ package kadai_007;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 public class Posts_Chapter07 {
 	public static void main(String[] args) {
 		
 		Connection con = null;
-		Statement statement = null;
+		PreparedStatement statement = null;
 		
 		//投稿データ
 		String[][] posts = {
@@ -33,16 +33,20 @@ public class Posts_Chapter07 {
 			System.out.println("データベース接続成功:" + con);
 			
 			//SQLクエリを準備
-			statement = con.createStatement();
+			String sql = "INSERT INTO posts (user_id,posted_at,post_content,likes) VALUES (?,?,?,?);";
+			statement = con.prepareStatement(sql);
 
 			int totalRows = 0;
-			for (String[] post : posts) {
-				String sql = "INSERT INTO posts (user_id, posted_at, post_content, likes) VALUES ('"
-                        + post[0] + "', '" + post[1] + "', '" + post[2] + "', '" + post[3] + "')";
-				
+			
+			for(int i = 0; i < posts.length; i++) {
+				statement.setInt(1, Integer.parseInt(posts[i][0])); //ユーザーID
+				statement.setString(2, posts[i][1]); //投稿日時
+				statement.setString(3, posts[i][2]); //投稿内容
+				statement.setInt(4, Integer.parseInt(posts[i][3])); //いいね数
+			
 				
 				//SQLクエリを実行
-                int rowCnt = statement.executeUpdate(sql);
+                int rowCnt = statement.executeUpdate();
                 totalRows += rowCnt;
 			}
 				System.out.println("レコード追加を実行します");
